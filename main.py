@@ -6,7 +6,13 @@ from linebot.models import (
     MessageEvent,
     TextMessage,
     TextSendMessage,
-    FlexSendMessage
+    FlexSendMessage,
+    RichMenu,
+    RichMenuSize,
+    RichMenuBounds,
+    RichMenuResponse,
+    RichMenuArea,
+    URIAction
 )
 from linebot.exceptions import LineBotApiError
 
@@ -47,316 +53,38 @@ def handle_message(event):
     print(TextSendMessage(text=event.message.text))
     in_text = event.message.text
     if in_text == 'test':
-        content = {
-            "type": "template",
-            "altText": "this is a buttons template",
-            "template": {
-                "type":
-                "buttons",
-                "imageAspectRatio":
-                "rectangle",
-                "imageSize":
-                "contain",
-                "imageBackgroundColor":
-                "#2B3CCA",
-                "title":
-                "按我啊",
-                "text":
-                "有種按我",
-                "actions": [{
-                    "type": "datetimepicker",
-                    "label": "動作 1",
-                    "data": "資料 1",
-                    "mode": "datetime",
-                    "initial": "2021-12-28T21:34",
-                    "max": "2022-12-28T21:34",
-                    "min": "2020-12-28T21:34"
-                }]
-            }
-        }
-        flex_message = FlexSendMessage(
-            alt_text='hello',
-            contents={
-                  "type": "carousel",
-                  "contents": [
-                    {
-                      "type": "bubble",
-                      "size": "micro",
-                      "hero": {
-                        "type": "image",
-                        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/flexsnapshot/clip/clip10.jpg",
-                        "size": "full",
-                        "aspectMode": "cover",
-                        "aspectRatio": "320:213"
-                      },
-                      "body": {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                          {
-                            "type": "text",
-                            "text": "Brown Cafe",
-                            "weight": "bold",
-                            "size": "sm",
-                            "wrap": True
-                          },
-                          {
-                            "type": "box",
-                            "layout": "baseline",
-                            "contents": [
-                              {
-                                "type": "icon",
-                                "size": "xs",
-                                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
-                              },
-                              {
-                                "type": "icon",
-                                "size": "xs",
-                                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
-                              },
-                              {
-                                "type": "icon",
-                                "size": "xs",
-                                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
-                              },
-                              {
-                                "type": "icon",
-                                "size": "xs",
-                                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
-                              },
-                              {
-                                "type": "icon",
-                                "size": "xs",
-                                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gray_star_28.png"
-                              },
-                              {
-                                "type": "text",
-                                "text": "4.0",
-                                "size": "xs",
-                                "color": "#8c8c8c",
-                                "margin": "md",
-                                "flex": 0
-                              }
-                            ]
-                          },
-                          {
-                            "type": "box",
-                            "layout": "vertical",
-                            "contents": [
-                              {
-                                "type": "box",
-                                "layout": "baseline",
-                                "spacing": "sm",
-                                "contents": [
-                                  {
-                                    "type": "text",
-                                    "text": "東京旅行",
-                                    "wrap": True,
-                                    "color": "#8c8c8c",
-                                    "size": "xs",
-                                    "flex": 5
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ],
-                        "spacing": "sm",
-                        "paddingAll": "13px"
-                      }
-                    },
-                    {
-                      "type": "bubble",
-                      "size": "micro",
-                      "hero": {
-                        "type": "image",
-                        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/flexsnapshot/clip/clip11.jpg",
-                        "size": "full",
-                        "aspectMode": "cover",
-                        "aspectRatio": "320:213"
-                      },
-                      "body": {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                          {
-                            "type": "text",
-                            "text": "Brow&Cony's Restaurant",
-                            "weight": "bold",
-                            "size": "sm",
-                            "wrap": True
-                          },
-                          {
-                            "type": "box",
-                            "layout": "baseline",
-                            "contents": [
-                              {
-                                "type": "icon",
-                                "size": "xs",
-                                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
-                              },
-                              {
-                                "type": "icon",
-                                "size": "xs",
-                                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
-                              },
-                              {
-                                "type": "icon",
-                                "size": "xs",
-                                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
-                              },
-                              {
-                                "type": "icon",
-                                "size": "xs",
-                                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
-                              },
-                              {
-                                "type": "icon",
-                                "size": "xs",
-                                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gray_star_28.png"
-                              },
-                              {
-                                "type": "text",
-                                "text": "4.0",
-                                "size": "sm",
-                                "color": "#8c8c8c",
-                                "margin": "md",
-                                "flex": 0
-                              }
-                            ]
-                          },
-                          {
-                            "type": "box",
-                            "layout": "vertical",
-                            "contents": [
-                              {
-                                "type": "box",
-                                "layout": "baseline",
-                                "spacing": "sm",
-                                "contents": [
-                                  {
-                                    "type": "text",
-                                    "text": "東京旅行",
-                                    "wrap": True,
-                                    "color": "#8c8c8c",
-                                    "size": "xs",
-                                    "flex": 5
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ],
-                        "spacing": "sm",
-                        "paddingAll": "13px"
-                      }
-                    },
-                    {
-                      "type": "bubble",
-                      "size": "micro",
-                      "hero": {
-                        "type": "image",
-                        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/flexsnapshot/clip/clip12.jpg",
-                        "size": "full",
-                        "aspectMode": "cover",
-                        "aspectRatio": "320:213"
-                      },
-                      "body": {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                          {
-                            "type": "text",
-                            "text": "Tata",
-                            "weight": "bold",
-                            "size": "sm"
-                          },
-                          {
-                            "type": "box",
-                            "layout": "baseline",
-                            "contents": [
-                              {
-                                "type": "icon",
-                                "size": "xs",
-                                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
-                              },
-                              {
-                                "type": "icon",
-                                "size": "xs",
-                                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
-                              },
-                              {
-                                "type": "icon",
-                                "size": "xs",
-                                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
-                              },
-                              {
-                                "type": "icon",
-                                "size": "xs",
-                                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
-                              },
-                              {
-                                "type": "icon",
-                                "size": "xs",
-                                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gray_star_28.png"
-                              },
-                              {
-                                "type": "text",
-                                "text": "4.0",
-                                "size": "sm",
-                                "color": "#8c8c8c",
-                                "margin": "md",
-                                "flex": 0
-                              }
-                            ]
-                          },
-                          {
-                            "type": "box",
-                            "layout": "vertical",
-                            "contents": [
-                              {
-                                "type": "box",
-                                "layout": "baseline",
-                                "spacing": "sm",
-                                "contents": [
-                                  {
-                                    "type": "text",
-                                    "text": "東京旅行",
-                                    "wrap": True,
-                                    "color": "#8c8c8c",
-                                    "size": "xs",
-                                    "flex": 5
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ],
-                        "spacing": "sm",
-                        "paddingAll": "13px"
-                      }
-                    }
-                  ]
-                }
-        )
-        line_bot_api.reply_message(event.reply_token, flex_message )
+        pass
     elif in_text == 'broadcast':
-        line_bot_api.broadcast(TextSendMessage(text='Hello World!'))
+        pass
+        # line_bot_api.broadcast(TextSendMessage(text='Hello World!'))
+    elif in_text == 'create':
+        rich_menu_to_create = RichMenu(
+            size=RichMenuSize(width=2500, height=843),
+            selected=False,
+            name="Nice richmenu",
+            chat_bar_text="Tap here",
+            areas=[RichMenuArea(
+                bounds=RichMenuBounds(x=0, y=0, width=2500, height=843),
+                action=URIAction(label='Go to line.me', uri='https://line.me'))]
+        )
+        rich_menu_id = line_bot_api.create_rich_menu(rich_menu=rich_menu_to_create)
+        print(rich_menu_id)
+        file_path = './test.jpg'
+        content_type = "image/png"
+        with open(file_path, 'rb') as f:
+            line_bot_api.set_rich_menu_image(rich_menu_id, content_type, f)
+        line_bot_api.set_default_rich_menu(rich_menu_id)
     else:
         line_bot_api.reply_message(event.reply_token,
                                    TextSendMessage(text=event.message.text))
-    
 
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000)
 
-    
-
     # try:
     #     line_bot_api.push_message('<to>', TextSendMessage(text='Hello World!'))
     # except LineBotApiError as e:
     #     print(e)
-
 
     # line_bot_api.reply_message(reply_token, TextSendMessage(text='Hello World!'))
