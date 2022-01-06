@@ -1,5 +1,4 @@
-from flask import Flask, request, abort
-from flask.templating import render_template
+from flask import Flask, request, abort, render_template
 
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
