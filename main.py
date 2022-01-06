@@ -1,4 +1,5 @@
 from flask import Flask, request, abort
+from flask.templating import render_template
 
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
@@ -12,7 +13,12 @@ from linebot.models import (
     RichMenuBounds,
     RichMenuResponse,
     RichMenuArea,
-    URIAction
+    URIAction,
+    PostbackTemplateAction,
+    TemplateSendMessage,
+    ButtonsTemplate,
+    PostbackAction,
+    MessageAction
 )
 from linebot.exceptions import LineBotApiError
 
@@ -24,6 +30,16 @@ YOUR_CHANNEL_SECRET = 'e0e86fec93bdf9b0de1f647ecd050b25'
 line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(YOUR_CHANNEL_SECRET)
 
+@app.route("/test")
+def test():
+    return render_template('test.html')
+
+@app.route("/", methods=['GET'])
+def get():
+    # logging.info("GET request,\nPath: %s\nHeaders:\n%s\n", str(self.path), str(self.headers))
+    body = request.get_data(as_text=True)
+    print(body)
+    return 'get test'
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -52,12 +68,51 @@ def handle_message(event):
     print(event.reply_token)
     print(TextSendMessage(text=event.message.text))
     in_text = event.message.text
+
+    u_a = URIAction(
+        label='uri',
+        uri='http://google.com/',
+        alt_uri='http://google.com/'
+    )
+
     if in_text == 'test':
         pass
+    elif in_text == 'button':
+        b_a = TemplateSendMessage(
+            alt_text='Buttons template',
+            template=ButtonsTemplate(
+                thumbnail_image_url='https://example.com/image.jpg',
+                title='Menu',
+                text='Please select',
+                actions=[
+                    PostbackAction(
+                        label='postback',
+                        display_text='postback text',
+                        data='action=buy&itemid=1'
+                    ),
+                    MessageAction(
+                        label='message',
+                        text='message text'
+                    ),
+                    URIAction(
+                        label='uri',
+                        uri='https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=1656766770&redirect_uri=https://linebot.yusyuan1208.repl.co'
+                    )
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, b_a)
     elif in_text == 'broadcast':
         pass
         # line_bot_api.broadcast(TextSendMessage(text='Hello World!'))
     elif in_text == 'create':
+        u_a = URIAction(label='Go to line.me', uri='https://line.me')
+        print(u_a)
+        p_a = PostbackTemplateAction(
+            label='postback',
+            display_text='postback text',
+            data='action=buy&itemid=1'
+        )
         rich_menu_to_create = RichMenu(
             size=RichMenuSize(width=2500, height=843),
             selected=False,
@@ -65,7 +120,7 @@ def handle_message(event):
             chat_bar_text="Tap here",
             areas=[RichMenuArea(
                 bounds=RichMenuBounds(x=0, y=0, width=2500, height=843),
-                action=URIAction(label='Go to line.me', uri='https://line.me'))]
+                action=p_a)]
         )
         rich_menu_id = line_bot_api.create_rich_menu(rich_menu=rich_menu_to_create)
         print(rich_menu_id)
