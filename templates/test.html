@@ -21,7 +21,11 @@
                     console.log(place)
                     console.log(liff.getVersion())
                     console.log(liff.isLoggedIn() )
-                    liff.login() 
+                    console.log(liff.getProfile())
+                    if(!liff.isLoggedIn() ){
+                        liff.login() 
+                    }
+                    
                 })
                 .catch((err) => {
                     // Error happens during initialization
