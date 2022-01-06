@@ -134,7 +134,7 @@ def handle_message(event):
 
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=8000)
+    app.run(host='0.0.0.0', port=8000)
 
     # try:
     #     line_bot_api.push_message('<to>', TextSendMessage(text='Hello World!'))

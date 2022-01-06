@@ -21,11 +21,13 @@
                     console.log(place)
                     console.log(liff.getVersion())
                     console.log(liff.isLoggedIn() )
-                    console.log(liff.getProfile())
+                    liff.getProfile().then(result => {
+                        $('#info').html(result.userId)
+                    })
+                    console.log()
                     if(!liff.isLoggedIn() ){
                         liff.login() 
                     }
-                    
                 })
                 .catch((err) => {
                     // Error happens during initialization
@@ -35,4 +37,5 @@
         });
     </script>
     test
+    <div id="info"></div>
 </body>
