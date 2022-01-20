@@ -1,4 +1,4 @@
-from flask import Flask, request, abort, render_template
+from flask import Flask, request, abort, render_template,jsonify
 
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
@@ -31,7 +31,17 @@ handler = WebhookHandler(YOUR_CHANNEL_SECRET)
 
 @app.route("/test")
 def test():
-    return render_template('test.html')
+    template = render_template('index.html')
+    # print(template)
+    return template
+
+@app.route("/test_post", methods=['POST'])
+def test_post():
+    body = request.get_data(as_text=True)
+    print(body)
+    json_dict = request.get_json()
+    print(json_dict)
+    return "test"
 
 @app.route("/", methods=['GET'])
 def get():
@@ -95,7 +105,11 @@ def handle_message(event):
                     ),
                     URIAction(
                         label='uri',
-                        uri='https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=1656766770&redirect_uri=https://linebot.yusyuan1208.repl.co'
+                        uri='https://liff-playground.netlify.app/'
+                    ),
+                    URIAction(
+                        label='uri',
+                        uri='https://liff.line.me/1656766770-y9GzVJpG'
                     )
                 ]
             )

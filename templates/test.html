@@ -21,12 +21,25 @@
                     console.log(place)
                     console.log(liff.getVersion())
                     console.log(liff.isLoggedIn() )
-                    liff.getProfile().then(result => {
-                        $('#info').html(result.userId)
-                    })
-                    console.log()
+                    var access_token = liff.getAccessToken()
+                    console.log(access_token)
+                    $('#info').html(access_token)
                     if(!liff.isLoggedIn() ){
                         liff.login() 
+                    }
+                    if (liff.scanCodeV2) {
+                        liff.scanCodeV2().then(result => {
+                            $('#scan').html(result)
+                            console.log(result)
+                            // result = { value: '' }
+                        });
+                    }
+                    if (liff.scanCode) {
+                        liff.scanCode().then(result => {
+                            $('#scan').html(result)
+                            console.log(result)
+                            // result = { value: '' }
+                        });
                     }
                 })
                 .catch((err) => {
@@ -38,4 +51,5 @@
     </script>
     test
     <div id="info"></div>
+    <div id="scan"></div>
 </body>
