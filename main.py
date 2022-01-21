@@ -1,5 +1,6 @@
 from flask import Flask, request, abort, render_template,jsonify
 import requests
+import json
 
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
@@ -39,9 +40,13 @@ def test():
 @app.route("/test_post", methods=['POST'])
 def test_post():
     body = request.get_data(as_text=True)
-    print(body)
-    json_dict = request.get_json()
+    # print(body)
+    # json_dict = request.get_json()
+    # print(json_dict)
+    json_dict = json.loads(body)
     print(json_dict)
+    
+    
     
     headers = {
             "Content-Type": "application/json",
