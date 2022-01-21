@@ -1,4 +1,5 @@
 from flask import Flask, request, abort, render_template,jsonify
+import requests
 
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
@@ -41,7 +42,21 @@ def test_post():
     print(body)
     json_dict = request.get_json()
     print(json_dict)
-    return "test"
+    
+    headers = {
+            "Content-Type": "application/json",
+            "Authorization":
+            "Bearer " + json_dict['access_token'],
+        }
+        # print(headers)
+    # print(re_payload)
+
+    url = "https://api.line.me/v2/profile"
+    # re = requests.post(url, headers=headers, data=json.dumps(re_payload).encode("utf-8"), timeout=None)
+    re = requests.get(url, headers=headers,  timeout=None)
+    print(re)
+    
+    return body
 
 @app.route("/", methods=['GET'])
 def get():
