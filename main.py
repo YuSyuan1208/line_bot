@@ -1,3 +1,4 @@
+from time import sleep
 from flask import Flask, request, abort, render_template,jsonify
 import requests
 import json
@@ -39,12 +40,13 @@ def test():
 
 @app.route("/test_post", methods=['POST'])
 def test_post():
+    # sleep(5)
     body = request.get_data(as_text=True)
-    # print(body)
+    print(body)
     # json_dict = request.get_json()
     # print(json_dict)
     json_dict = json.loads(body)
-    print(json_dict)
+    # print(json_dict)
     
     
     
@@ -59,9 +61,15 @@ def test_post():
     url = "https://api.line.me/v2/profile"
     # re = requests.post(url, headers=headers, data=json.dumps(re_payload).encode("utf-8"), timeout=None)
     re = requests.get(url, headers=headers,  timeout=None)
-    print(re)
+    re_json = re.json()
+    if re_json['userId'] == 'Ub95da38ba9b7324f35940beca4f7d01e':
+        re_json['checkFlag'] = True
+    else:
+        re_json['checkFlag'] = False
+        
+    print(re_json)
     
-    return body
+    return json.dumps(re_json)
 
 @app.route("/", methods=['GET'])
 def get():
@@ -100,8 +108,7 @@ def handle_message(event):
 
     u_a = URIAction(
         label='uri',
-        uri='http://google.com/',
-        alt_uri='http://google.com/'
+        uri='https://liff.line.me/1656766770-y9GzVJpG'
     )
 
     if in_text == 'test':
@@ -139,8 +146,8 @@ def handle_message(event):
         pass
         # line_bot_api.broadcast(TextSendMessage(text='Hello World!'))
     elif in_text == 'create':
-        u_a = URIAction(label='Go to line.me', uri='https://line.me')
-        print(u_a)
+        # u_a = URIAction(label='Go to line.me', uri='https://line.me')
+        # print(u_a)
         p_a = PostbackTemplateAction(
             label='postback',
             display_text='postback text',
@@ -153,7 +160,7 @@ def handle_message(event):
             chat_bar_text="Tap here",
             areas=[RichMenuArea(
                 bounds=RichMenuBounds(x=0, y=0, width=2500, height=843),
-                action=p_a)]
+                action=u_a)]
         )
         rich_menu_id = line_bot_api.create_rich_menu(rich_menu=rich_menu_to_create)
         print(rich_menu_id)
