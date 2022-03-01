@@ -24,7 +24,7 @@ from linebot.models import (
 )
 from linebot.exceptions import LineBotApiError
 
-from model.model import checkAccount, getLineProfile
+from model.model import checkAccount, checkOtp, checkRegister, getLineProfile
 
 app = Flask(__name__)
 
@@ -57,11 +57,13 @@ def account_check():
 def register_check():
     """ 註冊資訊確認，並傳送otp號碼 """
     body = request.get_data(as_text=True)
+    return checkRegister(body)
     
 @app.route("/otp_check", methods=['POST'])
 def otp_check():
     """ otp比對，有效期限預設300s """
     body = request.get_data(as_text=True)
+    return checkOtp(body)
 
 @app.route("/", methods=['GET'])
 def get():

@@ -46,10 +46,24 @@ def checkAccount(body):
     """ 登入身分證、密碼確認，預設A123456789、123456 """
     json_dict = json.loads(body)
     if json_dict['帳號'] == 'A123456789' and json_dict['密碼'] == '123456':
+        db_data['帳號'] = json_dict['帳號']
+        db_data['密碼'] = json_dict['密碼']
         return {'checkAccountFlag': True}
     else:
         return {'checkAccountFlag': False}
 
-def register_check(body):
+def checkRegister(body):
     """ 註冊確認 """
     json_dict = json.loads(body)
+    # if json_dict['帳號'] == 'A123456789' and json_dict['密碼'] == '123456':
+    return {'checkRegisterFlag': True}
+    # else:
+        # return {'checkRegisterFlag': False}
+    
+def checkOtp(body):
+    """ otp確認 """
+    json_dict = json.loads(body)
+    if json_dict['otp'] == '112233':
+        return {'checkOtpFlag': True}
+    else:
+        return {'checkOtpFlag': False}
