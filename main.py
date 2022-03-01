@@ -24,6 +24,8 @@ from linebot.models import (
 )
 from linebot.exceptions import LineBotApiError
 
+from model.model import checkAccount, getLineProfile
+
 app = Flask(__name__)
 
 YOUR_CHANNEL_ACCESS_TOKEN = 'Ay9oSCj6k3ZWIzToj+9ZQ313CSPLgnLgqUfutaz8Y3+ZbF7A9LaEbb9amLCPeszT/aPodrVHeNXXK13pteYf1Dnyx56dbgK3uOiPzg33N7nzKEttAmCml9pFxDcX0iPQXulAIIk4eIa6o+P6DIV9XQdB04t89/1O/w1cDnyilFU='
@@ -38,38 +40,28 @@ def test():
     # print(template)
     return template
 
-@app.route("/test_post", methods=['POST'])
-def test_post():
+@app.route("/line_check", methods=['POST'])
+def line_check():
+    """ access token 獲取line user id """
     # sleep(5)
     body = request.get_data(as_text=True)
-    print(body)
-    # json_dict = request.get_json()
-    # print(json_dict)
-    json_dict = json.loads(body)
-    # print(json_dict)
-    
-    
-    
-    headers = {
-            "Content-Type": "application/json",
-            "Authorization":
-            "Bearer " + json_dict['access_token'],
-        }
-        # print(headers)
-    # print(re_payload)
+    return getLineProfile(body)
 
-    url = "https://api.line.me/v2/profile"
-    # re = requests.post(url, headers=headers, data=json.dumps(re_payload).encode("utf-8"), timeout=None)
-    re = requests.get(url, headers=headers,  timeout=None)
-    re_json = re.json()
-    if re_json['userId'] == 'Ub95da38ba9b7324f35940beca4f7d01e':
-        re_json['checkFlag'] = True
-    else:
-        re_json['checkFlag'] = False
-        
-    print(re_json)
+@app.route("/account_check", methods=['POST'])
+def account_check():
+    """ 登入身分證、密碼確認 """
+    body = request.get_data(as_text=True)
+    return checkAccount(body)
     
-    return json.dumps(re_json)
+@app.route("/register_check", methods=['POST'])
+def register_check():
+    """ 註冊資訊確認，並傳送otp號碼 """
+    body = request.get_data(as_text=True)
+    
+@app.route("/otp_check", methods=['POST'])
+def otp_check():
+    """ otp比對，有效期限預設300s """
+    body = request.get_data(as_text=True)
 
 @app.route("/", methods=['GET'])
 def get():
