@@ -2,10 +2,12 @@ import re
 import requests
 import json
 
+db_data = {}
+
 
 def getLineProfile(body):
     json_dict = json.loads(body)
-    # print(json_dict)
+    print(json_dict)
 
     headers = {
         "Content-Type": "application/json",
@@ -19,10 +21,22 @@ def getLineProfile(body):
     # re = requests.post(url, headers=headers, data=json.dumps(re_payload).encode("utf-8"), timeout=None)
     re = requests.get(url, headers=headers,  timeout=None)
     re_json = re.json()
-    if re_json['userId'] == 'Ub95da38ba9b7324f35940beca4f7d01e':
-        re_json['checkFlag'] = True
+    # if re_json['userId'] == 'Ub95da38ba9b7324f35940beca4f7d01e':
+    #     re_json['checkFlag'] = True
+    # else:
+    #     re_json['checkFlag'] = False
+
+    if re_json['userId'] in db_data.keys():
+      user_value = db_data[re_json['userId']]
+      if 'checkFlag' in user_value.keys():
+        re_json['checkFlag'] = user_value['checkFlag']
     else:
-        re_json['checkFlag'] = False
+      db_data[re_json['userId']] = {
+        'checkFlag': False
+      }
+      re_json['checkFlag'] = False
+
+    print(db_data[re_json['userId']])
 
     print(re_json)
     return json.dumps(re_json)
