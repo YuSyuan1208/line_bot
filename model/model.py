@@ -1,5 +1,5 @@
 import json
-from random import random
+import random
 
 from model.api_line import getProfileFromAccessToken
 
@@ -38,7 +38,7 @@ def getLineProfile(body):
         }
         re_json['checkFlag'] = False
 
-    db_data['accessToken'] = json_dict['access_token']
+    db_data[re_json['userId']]['accessToken'] = json_dict['access_token']
 
     print(db_data[re_json['userId']])
 
@@ -67,7 +67,7 @@ def checkRegister(body):
     userId = json_dict['userId']
     if not checkProfile(json_dict['userId'], json_dict['accessToken']):
         return {'checkRegisterFlag': False, 'msg': CHECK_PROFILE_ERROR_MSG}
-    if not json_dict['account'] == db_data[userId]['account']:
+    if not json_dict['identity'] == db_data[userId]['account']:
         return {'checkRegisterFlag': False, 'msg': '帳號與身分證不相同'}
     # if json_dict['帳號'] == 'A123456789' and json_dict['密碼'] == '123456':
     # db_data[userId]['account'] = json_dict['account']
@@ -88,6 +88,7 @@ def checkOtp(body):
     if not checkProfile(json_dict['userId'], json_dict['accessToken']):
         return {'checkOtpFlag': False, 'msg': CHECK_PROFILE_ERROR_MSG}
     if json_dict['otp'] == db_data[userId]['otp']:
+        db_data[userId]['checkFlag'] = True
         return {'checkOtpFlag': True}
     else:
         return {'checkOtpFlag': False}
