@@ -2,6 +2,7 @@ import json
 import random
 
 from model.api_line import getProfileFromAccessToken
+from model.google_mail import sendLineWebOptMail
 
 
 """ 
@@ -72,10 +73,12 @@ def checkRegister(body):
     # if json_dict['帳號'] == 'A123456789' and json_dict['密碼'] == '123456':
     # db_data[userId]['account'] = json_dict['account']
     db_data[userId]['password'] = json_dict['password']
-    db_data[userId]['email'] = json_dict['email']
+    email = json_dict['email']
+    db_data[userId]['email'] = email
     otp = getOtpValue()
     print('otp: %s' % otp)
     db_data[userId]['otp'] = otp
+    sendLineWebOptMail(email, 'OTP: %s' % otp)
     return {'checkRegisterFlag': True}
     # else:
     # return {'checkRegisterFlag': False}
