@@ -131,3 +131,6 @@ dmypy.json
 # 前端網頁
 static/
 template/
+
+# 資料設定
+data/
