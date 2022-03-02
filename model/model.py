@@ -38,7 +38,7 @@ def getLineProfile(body):
         }
         re_json['checkFlag'] = False
 
-    db_data[re_json['userId']]['accessToken'] = json_dict['access_token']
+    db_data[re_json['userId']]['accessToken'] = json_dict['accessToken']
 
     print(db_data[re_json['userId']])
 
