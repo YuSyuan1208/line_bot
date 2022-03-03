@@ -56,7 +56,7 @@ def checkAccount(body):
     userId = json_dict['userId']
     if not checkProfile(json_dict['userId'], json_dict['accessToken']):
         return {'checkAccountFlag': False, 'msg': CHECK_PROFILE_ERROR_MSG}
-    if json_dict['account'] == 'A123456789' and json_dict['password'] == json_dict['account']:
+    if json_dict['password'] == json_dict['account']:
         db_data[userId]['account'] = json_dict['account']
         # db_data['account'] = json_dict['account']
         # db_data['password'] = json_dict['password']
