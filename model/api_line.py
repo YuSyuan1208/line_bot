@@ -1,6 +1,7 @@
 import requests
 
 def getProfileFromAccessToken(accessToken):
+    """ accessToken獲取Line個人資訊 """
     headers = {
         "Content-Type": "application/json",
         "Authorization":
