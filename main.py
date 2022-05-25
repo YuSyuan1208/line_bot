@@ -124,10 +124,15 @@ b_a = TemplateSendMessage(
 
 @app.route("/test")
 def test():
-    template = render_template('index.html')
+    template = render_template('test.html')
     # print(template)
     return template
 
+@app.route("/test2")
+def test2():
+    template = render_template('test2.html')
+    # print(template)
+    return template
 
 @app.route("/line_check", methods=['POST'])
 def line_check():
@@ -173,6 +178,7 @@ def callback():
 
     # get request body as text
     body = request.get_data(as_text=True)
+    print(body)
     app.logger.info("Request body: " + body)
 
     # handle webhook body
@@ -314,7 +320,7 @@ def get_group_members_count():
 
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=8000)
+    app.run(host='127.0.0.0', port=8000)
 
     # try:
     #     line_bot_api.push_message('<to>', TextSendMessage(text='Hello World!'))
